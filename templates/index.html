@@ -35,35 +35,21 @@
       color: #333;
       margin-bottom: 8px;
     }
-
-    .section-label span {
-      font-weight: 400;
-      color: #999;
-      margin-left: 6px;
-    }
+    .section-label span { font-weight: 400; color: #999; margin-left: 6px; }
 
     .drop-zone {
       border: 2px dashed #c0c8d8;
       border-radius: 12px;
-      padding: 32px 20px;
+      padding: 28px 20px;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s;
       background: #fafbfc;
       margin-bottom: 20px;
     }
-
-    .drop-zone:hover, .drop-zone.drag-over {
-      border-color: #e53e3e;
-      background: #fff5f5;
-    }
-
-    .drop-zone.has-file {
-      border-color: #38a169;
-      background: #f0fff4;
-    }
-
-    .drop-zone .icon { font-size: 36px; margin-bottom: 8px; }
+    .drop-zone:hover, .drop-zone.drag-over { border-color: #e53e3e; background: #fff5f5; }
+    .drop-zone.has-file { border-color: #38a169; background: #f0fff4; }
+    .drop-zone .icon { font-size: 32px; margin-bottom: 8px; }
     .drop-zone p { color: #555; font-size: 14px; margin-bottom: 4px; }
     .drop-zone span { color: #999; font-size: 12px; }
 
@@ -78,28 +64,11 @@
       border-radius: 10px;
       padding: 10px 14px;
     }
-
-    .preview-row img {
-      width: 48px;
-      height: 48px;
-      object-fit: cover;
-      border-radius: 6px;
-      border: 1px solid #eee;
-    }
-
+    .preview-row img { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; border: 1px solid #eee; }
     .preview-row .info { flex: 1; min-width: 0; }
     .preview-row .info .name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .preview-row .info .size { font-size: 11px; color: #999; margin-top: 2px; }
-
-    .preview-row .remove {
-      background: none;
-      border: none;
-      color: #999;
-      cursor: pointer;
-      font-size: 18px;
-      padding: 0 4px;
-      flex-shrink: 0;
-    }
+    .preview-row .remove { background: none; border: none; color: #999; cursor: pointer; font-size: 18px; padding: 0 4px; flex-shrink: 0; }
     .preview-row .remove:hover { color: #e53e3e; }
 
     .divider {
@@ -110,20 +79,85 @@
       color: #bbb;
       font-size: 12px;
     }
-    .divider::before, .divider::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: #eee;
-    }
+    .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #eee; }
 
-    .banner-default {
+    /* スライダー */
+    .slider-section {
+      background: #fafbfc;
       border: 1px solid #eee;
-      border-radius: 10px;
-      overflow: hidden;
+      border-radius: 12px;
+      padding: 16px 20px;
       margin-bottom: 20px;
     }
 
+    .slider-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .slider-header .label { font-size: 13px; font-weight: 600; color: #333; }
+
+    .slider-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #e53e3e;
+      min-width: 52px;
+      text-align: right;
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: #e2e8f0;
+      outline: none;
+      margin-bottom: 8px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #e53e3e;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(229,62,62,0.4);
+    }
+
+    .slider-hints {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    /* リアルタイムプレビュー */
+    .preview-canvas-wrap {
+      display: none;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #eee;
+      background: #f9f9f9;
+    }
+
+    .preview-canvas-wrap .preview-label {
+      font-size: 12px;
+      color: #999;
+      padding: 8px 14px;
+      background: #fafafa;
+      border-bottom: 1px solid #eee;
+    }
+
+    #preview-canvas {
+      width: 100%;
+      display: block;
+    }
+
+    /* デフォルトバナープレビュー */
+    .banner-default { border: 1px solid #eee; border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
     .banner-default-header {
       display: flex;
       align-items: center;
@@ -132,23 +166,9 @@
       background: #fafafa;
       border-bottom: 1px solid #eee;
     }
-
     .banner-default-header span { font-size: 12px; color: #888; }
-
-    .badge {
-      font-size: 11px;
-      background: #ebf8ff;
-      color: #2b6cb0;
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-weight: 500;
-    }
-
-    .badge.custom {
-      background: #f0fff4;
-      color: #276749;
-    }
-
+    .badge { font-size: 11px; background: #ebf8ff; color: #2b6cb0; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
+    .badge.custom { background: #f0fff4; color: #276749; }
     .banner-default img { width: 100%; display: block; }
 
     .btn {
@@ -163,24 +183,14 @@
       border-radius: 10px;
       cursor: pointer;
       transition: background 0.2s;
-      margin-top: 4px;
     }
-
     .btn:hover { background: #c53030; }
     .btn:disabled { background: #ccc; cursor: not-allowed; }
 
-    .loading {
-      display: none;
-      text-align: center;
-      margin-top: 14px;
-      color: #666;
-      font-size: 14px;
-    }
-
+    .loading { display: none; text-align: center; margin-top: 14px; color: #666; font-size: 14px; }
     .spinner {
       display: inline-block;
-      width: 16px;
-      height: 16px;
+      width: 16px; height: 16px;
       border: 2px solid #ddd;
       border-top-color: #e53e3e;
       border-radius: 50%;
@@ -188,7 +198,6 @@
       vertical-align: middle;
       margin-right: 6px;
     }
-
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
@@ -239,7 +248,29 @@
         <span>デフォルトバナー</span>
         <span class="badge" id="banner-badge">使用中</span>
       </div>
-      <img src="/static/banner.png" alt="デフォルトバナー">
+      <img id="default-banner-img" src="/static/banner.png" alt="デフォルトバナー">
+    </div>
+
+    <div class="divider">サイズ調整</div>
+
+    <!-- バナーサイズスライダー -->
+    <div class="slider-section">
+      <div class="slider-header">
+        <div class="label">バナーの高さ（全体に対する割合）</div>
+        <div class="slider-value"><span id="ratio-display">22</span>%</div>
+      </div>
+      <input type="range" id="banner-ratio" min="10" max="40" value="22" step="1">
+      <div class="slider-hints">
+        <span>小さめ (10%)</span>
+        <span>おすすめ (22%)</span>
+        <span>大きめ (40%)</span>
+      </div>
+    </div>
+
+    <!-- リアルタイムプレビュー -->
+    <div class="preview-canvas-wrap" id="preview-canvas-wrap">
+      <div class="preview-label">プレビュー（実際の出力イメージ）</div>
+      <canvas id="preview-canvas"></canvas>
     </div>
 
     <button class="btn" id="submit-btn" disabled>バナーを追加してダウンロード</button>
@@ -251,11 +282,21 @@
   <script>
     let productFile = null;
     let bannerFile = null;
+    let productDataUrl = null;
+    let bannerDataUrl = null;
+    const defaultBannerSrc = '/static/banner.png';
+
+    const slider = document.getElementById('banner-ratio');
+    const ratioDisplay = document.getElementById('ratio-display');
+
+    slider.addEventListener('input', () => {
+      ratioDisplay.textContent = slider.value;
+      updatePreview();
+    });
 
     function setupDropZone(zoneId, inputId, onFile) {
       const zone = document.getElementById(zoneId);
       const input = document.getElementById(inputId);
-
       zone.addEventListener('click', () => input.click());
       zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
       zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
@@ -268,15 +309,15 @@
       input.addEventListener('change', () => { if (input.files[0]) onFile(input.files[0]); });
     }
 
-    function showPreview(thumbId, nameId, sizeId, previewRowId, zoneId, file) {
+    function showPreview(thumbId, nameId, sizeId, previewRowId, zoneId, file, onDataUrl) {
       const reader = new FileReader();
       reader.onload = e => {
         document.getElementById(thumbId).src = e.target.result;
         document.getElementById(nameId).textContent = file.name;
         document.getElementById(sizeId).textContent = (file.size / 1024).toFixed(0) + ' KB';
         document.getElementById(previewRowId).style.display = 'flex';
-        document.getElementById(zoneId).classList.add('has-file');
         document.getElementById(zoneId).style.display = 'none';
+        if (onDataUrl) onDataUrl(e.target.result);
       };
       reader.readAsDataURL(file);
     }
@@ -293,30 +334,71 @@
     // 商品写真
     setupDropZone('product-zone', 'product-input', file => {
       productFile = file;
-      showPreview('product-thumb', 'product-name', 'product-size', 'product-preview', 'product-zone', file);
+      showPreview('product-thumb', 'product-name', 'product-size', 'product-preview', 'product-zone', file, url => {
+        productDataUrl = url;
+        updatePreview();
+      });
       updateSubmit();
     });
 
     document.getElementById('product-remove').addEventListener('click', () => {
       productFile = null;
+      productDataUrl = null;
       clearPreview('product-thumb', 'product-name', 'product-size', 'product-preview', 'product-zone', 'product-input');
       updateSubmit();
+      updatePreview();
     });
 
     // バナー
     setupDropZone('banner-zone', 'banner-input', file => {
       bannerFile = file;
-      showPreview('banner-thumb', 'banner-name', 'banner-size', 'banner-preview', 'banner-zone', file);
+      showPreview('banner-thumb', 'banner-name', 'banner-size', 'banner-preview', 'banner-zone', file, url => {
+        bannerDataUrl = url;
+        updatePreview();
+      });
       document.getElementById('banner-badge').textContent = 'カスタム使用中';
       document.getElementById('banner-badge').className = 'badge custom';
     });
 
     document.getElementById('banner-remove').addEventListener('click', () => {
       bannerFile = null;
+      bannerDataUrl = null;
       clearPreview('banner-thumb', 'banner-name', 'banner-size', 'banner-preview', 'banner-zone', 'banner-input');
       document.getElementById('banner-badge').textContent = '使用中';
       document.getElementById('banner-badge').className = 'badge';
+      updatePreview();
     });
+
+    // リアルタイムプレビュー（Canvas）
+    function updatePreview() {
+      const wrap = document.getElementById('preview-canvas-wrap');
+      if (!productDataUrl) { wrap.style.display = 'none'; return; }
+
+      wrap.style.display = 'block';
+      const canvas = document.getElementById('preview-canvas');
+      const ctx = canvas.getContext('2d');
+      const ratio = parseInt(slider.value) / 100;
+      const SIZE = 500; // プレビュー用サイズ
+      canvas.width = SIZE;
+      canvas.height = SIZE;
+
+      const bannerH = Math.round(SIZE * ratio);
+      const productH = SIZE - bannerH;
+
+      const productImg = new Image();
+      productImg.onload = () => {
+        ctx.drawImage(productImg, 0, 0, SIZE, productH);
+
+        const bannerSrc = bannerDataUrl || defaultBannerSrc;
+        const bannerImg = new Image();
+        bannerImg.crossOrigin = 'anonymous';
+        bannerImg.onload = () => {
+          ctx.drawImage(bannerImg, 0, productH, SIZE, bannerH);
+        };
+        bannerImg.src = bannerSrc;
+      };
+      productImg.src = productDataUrl;
+    }
 
     function updateSubmit() {
       document.getElementById('submit-btn').disabled = !productFile;
@@ -329,6 +411,7 @@
 
       const formData = new FormData();
       formData.append('image', productFile);
+      formData.append('banner_ratio', slider.value);
       if (bannerFile) formData.append('banner', bannerFile);
 
       try {

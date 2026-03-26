@@ -32,7 +32,8 @@ def process():
     else:
         banner = Image.open(BANNER_PATH).convert("RGB")
 
-    banner_h = int(SIZE * BANNER_RATIO)
+    ratio = int(request.form.get("banner_ratio", BANNER_RATIO * 100))
+    banner_h = int(SIZE * ratio / 100)
     product_h = SIZE - banner_h
 
     canvas = Image.new("RGB", (SIZE, SIZE), (255, 255, 255))
