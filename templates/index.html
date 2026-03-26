@@ -289,8 +289,16 @@
     const slider = document.getElementById('banner-ratio');
     const ratioDisplay = document.getElementById('ratio-display');
 
+    // 前回の設定を復元
+    const saved = localStorage.getItem('bannerRatio');
+    if (saved) {
+      slider.value = saved;
+      ratioDisplay.textContent = saved;
+    }
+
     slider.addEventListener('input', () => {
       ratioDisplay.textContent = slider.value;
+      localStorage.setItem('bannerRatio', slider.value);
       updatePreview();
     });
 
