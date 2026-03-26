@@ -9,185 +9,274 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f0f4f8;
+      background: #f0f2f5;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      padding: 32px 16px;
     }
 
-    .card {
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .header h1 { font-size: 26px; font-weight: 800; color: #1a1a2e; margin-bottom: 6px; }
+    .header p { color: #777; font-size: 15px; }
+
+    /* ステップカード */
+    .step-card {
       background: white;
       border-radius: 16px;
-      padding: 40px;
-      width: 100%;
-      max-width: 540px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: box-shadow 0.2s;
     }
+    .step-card.active { box-shadow: 0 4px 20px rgba(229,62,62,0.12); }
 
-    h1 { font-size: 22px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
-    .subtitle { color: #666; font-size: 14px; margin-bottom: 28px; }
-
-    .section-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 8px;
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
     }
-    .section-label span { font-weight: 400; color: #999; margin-left: 6px; }
+    .step-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: #e53e3e;
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-num.done { background: #38a169; }
+    .step-title { font-size: 16px; font-weight: 700; color: #1a1a2e; }
+    .step-sub { font-size: 13px; color: #999; margin-left: auto; }
 
+    /* ドロップゾーン */
     .drop-zone {
-      border: 2px dashed #c0c8d8;
+      border: 2px dashed #d1d9e6;
       border-radius: 12px;
-      padding: 28px 20px;
+      padding: 36px 20px;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s;
       background: #fafbfc;
-      margin-bottom: 20px;
     }
     .drop-zone:hover, .drop-zone.drag-over { border-color: #e53e3e; background: #fff5f5; }
-    .drop-zone.has-file { border-color: #38a169; background: #f0fff4; }
-    .drop-zone .icon { font-size: 32px; margin-bottom: 8px; }
-    .drop-zone p { color: #555; font-size: 14px; margin-bottom: 4px; }
-    .drop-zone span { color: #999; font-size: 12px; }
+    .drop-zone .icon { font-size: 40px; margin-bottom: 10px; }
+    .drop-zone p { color: #555; font-size: 15px; margin-bottom: 4px; font-weight: 500; }
+    .drop-zone span { color: #aaa; font-size: 13px; }
 
-    .preview-row {
+    /* アップロード済みプレビュー */
+    .uploaded {
       display: none;
       align-items: center;
-      gap: 12px;
-      margin-top: -12px;
-      margin-bottom: 20px;
+      gap: 16px;
+      padding: 14px 16px;
       background: #f0fff4;
-      border: 1px solid #c6f6d5;
-      border-radius: 10px;
-      padding: 10px 14px;
+      border: 1.5px solid #9ae6b4;
+      border-radius: 12px;
     }
-    .preview-row img { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; border: 1px solid #eee; }
-    .preview-row .info { flex: 1; min-width: 0; }
-    .preview-row .info .name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .preview-row .info .size { font-size: 11px; color: #999; margin-top: 2px; }
-    .preview-row .remove { background: none; border: none; color: #999; cursor: pointer; font-size: 18px; padding: 0 4px; flex-shrink: 0; }
-    .preview-row .remove:hover { color: #e53e3e; }
+    .uploaded img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; flex-shrink: 0; }
+    .uploaded .info { flex: 1; min-width: 0; }
+    .uploaded .info .fname { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .uploaded .info .fsize { font-size: 12px; color: #888; margin-top: 3px; }
+    .change-btn {
+      font-size: 13px;
+      color: #e53e3e;
+      background: none;
+      border: 1.5px solid #e53e3e;
+      border-radius: 8px;
+      padding: 6px 14px;
+      cursor: pointer;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .change-btn:hover { background: #fff5f5; }
 
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-      color: #bbb;
-      font-size: 12px;
+    /* バナー選択 */
+    .banner-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
-    .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #eee; }
+
+    .banner-card {
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .banner-card:hover { border-color: #e53e3e; }
+    .banner-card.selected { border-color: #e53e3e; box-shadow: 0 0 0 3px rgba(229,62,62,0.15); }
+
+    .banner-card .check {
+      position: absolute;
+      top: 8px; right: 8px;
+      width: 24px; height: 24px;
+      background: #e53e3e;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 13px;
+      font-weight: bold;
+    }
+    .banner-card.selected .check { display: flex; }
+
+    .banner-card-label {
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+      background: #fafafa;
+      border-top: 1px solid #eee;
+    }
+
+    .banner-card img { width: 100%; display: block; height: 70px; object-fit: cover; }
+
+    .banner-card .custom-placeholder {
+      height: 70px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #fafbfc;
+      gap: 6px;
+    }
+    .banner-card .custom-placeholder .plus { font-size: 28px; color: #ccc; }
+    .banner-card .custom-placeholder span { font-size: 12px; color: #aaa; }
 
     /* スライダー */
-    .slider-section {
+    .slider-wrap {
       background: #fafbfc;
-      border: 1px solid #eee;
+      border: 1.5px solid #e2e8f0;
       border-radius: 12px;
-      padding: 16px 20px;
-      margin-bottom: 20px;
+      padding: 20px 24px;
     }
 
-    .slider-header {
+    .slider-top {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
-
-    .slider-header .label { font-size: 13px; font-weight: 600; color: #333; }
-
-    .slider-value {
-      font-size: 20px;
-      font-weight: 700;
+    .slider-top .label { font-size: 14px; color: #555; font-weight: 500; }
+    .slider-val {
+      font-size: 32px;
+      font-weight: 800;
       color: #e53e3e;
-      min-width: 52px;
-      text-align: right;
+      line-height: 1;
     }
+    .slider-val span { font-size: 16px; font-weight: 600; color: #e53e3e; }
 
     input[type=range] {
       -webkit-appearance: none;
       width: 100%;
-      height: 6px;
-      border-radius: 3px;
-      background: #e2e8f0;
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(to right, #e53e3e 0%, #e53e3e var(--pct), #e2e8f0 var(--pct), #e2e8f0 100%);
       outline: none;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 22px;
-      height: 22px;
+      width: 26px; height: 26px;
       border-radius: 50%;
-      background: #e53e3e;
+      background: white;
+      border: 3px solid #e53e3e;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(229,62,62,0.4);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
 
-    .slider-hints {
+    .slider-hints { display: flex; justify-content: space-between; font-size: 12px; color: #bbb; }
+
+    /* プレビュー */
+    .preview-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .preview-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 16px;
       display: flex;
-      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .preview-title .live-badge {
       font-size: 11px;
-      color: #aaa;
+      background: #fed7d7;
+      color: #c53030;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 600;
     }
 
-    /* リアルタイムプレビュー */
-    .preview-canvas-wrap {
-      display: none;
-      margin-bottom: 20px;
+    .preview-empty {
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #fafbfc;
+      border: 2px dashed #e2e8f0;
       border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #eee;
-      background: #f9f9f9;
+      color: #ccc;
+      font-size: 14px;
+      gap: 10px;
     }
-
-    .preview-canvas-wrap .preview-label {
-      font-size: 12px;
-      color: #999;
-      padding: 8px 14px;
-      background: #fafafa;
-      border-bottom: 1px solid #eee;
-    }
+    .preview-empty .icon { font-size: 36px; }
 
     #preview-canvas {
       width: 100%;
+      border-radius: 10px;
       display: block;
     }
 
-    /* デフォルトバナープレビュー */
-    .banner-default { border: 1px solid #eee; border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
-    .banner-default-header {
+    /* ダウンロードボタン */
+    .download-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .btn-download {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      background: #fafafa;
-      border-bottom: 1px solid #eee;
-    }
-    .banner-default-header span { font-size: 12px; color: #888; }
-    .badge { font-size: 11px; background: #ebf8ff; color: #2b6cb0; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
-    .badge.custom { background: #f0fff4; color: #276749; }
-    .banner-default img { width: 100%; display: block; }
-
-    .btn {
-      display: block;
+      justify-content: center;
+      gap: 10px;
       width: 100%;
-      padding: 14px;
+      padding: 16px;
       background: #e53e3e;
       color: white;
-      font-size: 16px;
-      font-weight: 600;
+      font-size: 17px;
+      font-weight: 700;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.2s;
     }
-    .btn:hover { background: #c53030; }
-    .btn:disabled { background: #ccc; cursor: not-allowed; }
+    .btn-download:hover { background: #c53030; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(229,62,62,0.4); }
+    .btn-download:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-download .icon { font-size: 20px; }
 
-    .loading { display: none; text-align: center; margin-top: 14px; color: #666; font-size: 14px; }
+    .loading { display: none; text-align: center; margin-top: 12px; color: #888; font-size: 14px; }
     .spinner {
       display: inline-block;
       width: 16px; height: 16px;
@@ -199,83 +288,108 @@
       margin-right: 6px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    input[type=file] { display: none; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>eBay Banner Tool</h1>
-    <p class="subtitle">商品写真にバナーを追加して1000×1000pxで保存します</p>
-
-    <!-- 商品写真 -->
-    <div class="section-label">商品写真</div>
-    <div class="drop-zone" id="product-zone">
-      <div class="icon">🖼️</div>
-      <p>写真をドラッグ＆ドロップ</p>
-      <span>または クリックして選択（JPG / PNG）</span>
-      <input type="file" id="product-input" accept="image/*" style="display:none">
+  <div class="container">
+    <div class="header">
+      <h1>eBay Banner Tool</h1>
+      <p>商品写真にバナーを追加して1000×1000pxで出力</p>
     </div>
-    <div class="preview-row" id="product-preview">
-      <img id="product-thumb" src="" alt="">
-      <div class="info">
-        <div class="name" id="product-name"></div>
-        <div class="size" id="product-size"></div>
+
+    <!-- STEP 1: 商品写真 -->
+    <div class="step-card" id="step1-card">
+      <div class="step-header">
+        <div class="step-num" id="step1-num">1</div>
+        <div class="step-title">商品写真をアップロード</div>
+        <div class="step-sub" id="step1-sub">JPG / PNG</div>
       </div>
-      <button class="remove" id="product-remove">×</button>
-    </div>
-
-    <div class="divider">バナーを選択</div>
-
-    <!-- カスタムバナー -->
-    <div class="section-label">バナー画像 <span>（変更する場合のみ選択）</span></div>
-    <div class="drop-zone" id="banner-zone">
-      <div class="icon">🏷️</div>
-      <p>カスタムバナーをドラッグ＆ドロップ</p>
-      <span>または クリックして選択（JPG / PNG）</span>
-      <input type="file" id="banner-input" accept="image/*" style="display:none">
-    </div>
-    <div class="preview-row" id="banner-preview">
-      <img id="banner-thumb" src="" alt="">
-      <div class="info">
-        <div class="name" id="banner-name"></div>
-        <div class="size" id="banner-size"></div>
+      <div class="drop-zone" id="product-zone">
+        <div class="icon">🖼️</div>
+        <p>ここに写真をドラッグ＆ドロップ</p>
+        <span>または クリックして選択</span>
+        <input type="file" id="product-input" accept="image/*">
       </div>
-      <button class="remove" id="banner-remove">×</button>
-    </div>
-
-    <!-- デフォルトバナープレビュー -->
-    <div class="banner-default" id="default-banner-wrap">
-      <div class="banner-default-header">
-        <span>デフォルトバナー</span>
-        <span class="badge" id="banner-badge">使用中</span>
-      </div>
-      <img id="default-banner-img" src="/static/banner.png" alt="デフォルトバナー">
-    </div>
-
-    <div class="divider">サイズ調整</div>
-
-    <!-- バナーサイズスライダー -->
-    <div class="slider-section">
-      <div class="slider-header">
-        <div class="label">バナーの高さ（全体に対する割合）</div>
-        <div class="slider-value"><span id="ratio-display">22</span>%</div>
-      </div>
-      <input type="range" id="banner-ratio" min="10" max="40" value="22" step="1">
-      <div class="slider-hints">
-        <span>小さめ (10%)</span>
-        <span>おすすめ (22%)</span>
-        <span>大きめ (40%)</span>
+      <div class="uploaded" id="product-uploaded">
+        <img id="product-thumb" src="" alt="">
+        <div class="info">
+          <div class="fname" id="product-name"></div>
+          <div class="fsize" id="product-size"></div>
+        </div>
+        <button class="change-btn" id="product-change">変更</button>
       </div>
     </div>
 
-    <!-- リアルタイムプレビュー -->
-    <div class="preview-canvas-wrap" id="preview-canvas-wrap">
-      <div class="preview-label">プレビュー（実際の出力イメージ）</div>
-      <canvas id="preview-canvas"></canvas>
+    <!-- STEP 2: バナー選択 -->
+    <div class="step-card" id="step2-card">
+      <div class="step-header">
+        <div class="step-num" id="step2-num">2</div>
+        <div class="step-title">バナーを選ぶ</div>
+      </div>
+      <div class="banner-cards">
+        <!-- デフォルト -->
+        <div class="banner-card selected" id="banner-default-card" onclick="selectDefault()">
+          <div class="check">✓</div>
+          <img src="/static/banner.png" alt="デフォルトバナー">
+          <div class="banner-card-label">デフォルト</div>
+        </div>
+        <!-- カスタム -->
+        <div class="banner-card" id="banner-custom-card" onclick="document.getElementById('banner-input').click()">
+          <div class="check">✓</div>
+          <div class="custom-placeholder" id="custom-placeholder">
+            <div class="plus">＋</div>
+            <span>カスタムを追加</span>
+          </div>
+          <img id="custom-banner-img" src="" alt="" style="display:none; height:70px; object-fit:cover;">
+          <div class="banner-card-label" id="custom-label">カスタム</div>
+          <input type="file" id="banner-input" accept="image/*">
+        </div>
+      </div>
     </div>
 
-    <button class="btn" id="submit-btn" disabled>バナーを追加してダウンロード</button>
-    <div class="loading" id="loading">
-      <span class="spinner"></span>処理中...
+    <!-- STEP 3: サイズ調整 -->
+    <div class="step-card" id="step3-card">
+      <div class="step-header">
+        <div class="step-num">3</div>
+        <div class="step-title">バナーの大きさを調整</div>
+      </div>
+      <div class="slider-wrap">
+        <div class="slider-top">
+          <div class="label">バナーの高さ（全体に対する割合）</div>
+          <div class="slider-val"><span id="ratio-display">22</span><span>%</span></div>
+        </div>
+        <input type="range" id="banner-ratio" min="10" max="40" value="22" step="1">
+        <div class="slider-hints">
+          <span>小さめ 10%</span>
+          <span>おすすめ 22%</span>
+          <span>大きめ 40%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- プレビュー -->
+    <div class="preview-card">
+      <div class="preview-title">
+        プレビュー
+        <span class="live-badge">LIVE</span>
+      </div>
+      <div class="preview-empty" id="preview-empty">
+        <div class="icon">👆</div>
+        <div>商品写真をアップロードするとここに表示されます</div>
+      </div>
+      <canvas id="preview-canvas" style="display:none;"></canvas>
+    </div>
+
+    <!-- ダウンロード -->
+    <div class="download-card">
+      <button class="btn-download" id="submit-btn" disabled>
+        <span class="icon">⬇️</span> バナーを追加してダウンロード
+      </button>
+      <div class="loading" id="loading">
+        <span class="spinner"></span>処理中...
+      </div>
     </div>
   </div>
 
@@ -284,126 +398,145 @@
     let bannerFile = null;
     let productDataUrl = null;
     let bannerDataUrl = null;
+    let useDefault = true;
     const defaultBannerSrc = '/static/banner.png';
 
+    // スライダー初期化（保存値復元）
     const slider = document.getElementById('banner-ratio');
     const ratioDisplay = document.getElementById('ratio-display');
-
-    // 前回の設定を復元
     const saved = localStorage.getItem('bannerRatio');
-    if (saved) {
-      slider.value = saved;
-      ratioDisplay.textContent = saved;
-    }
+    if (saved) { slider.value = saved; ratioDisplay.textContent = saved; }
+    updateSliderColor();
 
     slider.addEventListener('input', () => {
       ratioDisplay.textContent = slider.value;
       localStorage.setItem('bannerRatio', slider.value);
+      updateSliderColor();
       updatePreview();
     });
 
-    function setupDropZone(zoneId, inputId, onFile) {
-      const zone = document.getElementById(zoneId);
-      const input = document.getElementById(inputId);
-      zone.addEventListener('click', () => input.click());
-      zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
-      zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
-      zone.addEventListener('drop', e => {
-        e.preventDefault();
-        zone.classList.remove('drag-over');
-        const file = e.dataTransfer.files[0];
-        if (file && file.type.startsWith('image/')) onFile(file);
-      });
-      input.addEventListener('change', () => { if (input.files[0]) onFile(input.files[0]); });
+    function updateSliderColor() {
+      const pct = ((slider.value - slider.min) / (slider.max - slider.min) * 100).toFixed(1) + '%';
+      slider.style.setProperty('--pct', pct);
     }
 
-    function showPreview(thumbId, nameId, sizeId, previewRowId, zoneId, file, onDataUrl) {
+    // 商品写真
+    const productZone = document.getElementById('product-zone');
+    const productInput = document.getElementById('product-input');
+
+    productZone.addEventListener('click', () => productInput.click());
+    productZone.addEventListener('dragover', e => { e.preventDefault(); productZone.classList.add('drag-over'); });
+    productZone.addEventListener('dragleave', () => productZone.classList.remove('drag-over'));
+    productZone.addEventListener('drop', e => {
+      e.preventDefault();
+      productZone.classList.remove('drag-over');
+      const f = e.dataTransfer.files[0];
+      if (f && f.type.startsWith('image/')) setProduct(f);
+    });
+    productInput.addEventListener('change', () => { if (productInput.files[0]) setProduct(productInput.files[0]); });
+    document.getElementById('product-change').addEventListener('click', () => productInput.click());
+
+    function setProduct(file) {
+      productFile = file;
       const reader = new FileReader();
       reader.onload = e => {
-        document.getElementById(thumbId).src = e.target.result;
-        document.getElementById(nameId).textContent = file.name;
-        document.getElementById(sizeId).textContent = (file.size / 1024).toFixed(0) + ' KB';
-        document.getElementById(previewRowId).style.display = 'flex';
-        document.getElementById(zoneId).style.display = 'none';
-        if (onDataUrl) onDataUrl(e.target.result);
+        productDataUrl = e.target.result;
+        document.getElementById('product-thumb').src = productDataUrl;
+        document.getElementById('product-name').textContent = file.name;
+        document.getElementById('product-size').textContent = (file.size / 1024).toFixed(0) + ' KB';
+        productZone.style.display = 'none';
+        document.getElementById('product-uploaded').style.display = 'flex';
+        document.getElementById('step1-num').classList.add('done');
+        document.getElementById('step1-num').textContent = '✓';
+        updateSubmit();
+        updatePreview();
       };
       reader.readAsDataURL(file);
     }
 
-    function clearPreview(thumbId, nameId, sizeId, previewRowId, zoneId, inputId) {
-      document.getElementById(thumbId).src = '';
-      document.getElementById(nameId).textContent = '';
-      document.getElementById(previewRowId).style.display = 'none';
-      document.getElementById(zoneId).style.display = 'block';
-      document.getElementById(zoneId).classList.remove('has-file');
-      document.getElementById(inputId).value = '';
-    }
-
-    // 商品写真
-    setupDropZone('product-zone', 'product-input', file => {
-      productFile = file;
-      showPreview('product-thumb', 'product-name', 'product-size', 'product-preview', 'product-zone', file, url => {
-        productDataUrl = url;
-        updatePreview();
-      });
-      updateSubmit();
-    });
-
-    document.getElementById('product-remove').addEventListener('click', () => {
-      productFile = null;
-      productDataUrl = null;
-      clearPreview('product-thumb', 'product-name', 'product-size', 'product-preview', 'product-zone', 'product-input');
-      updateSubmit();
-      updatePreview();
-    });
-
-    // バナー
-    setupDropZone('banner-zone', 'banner-input', file => {
-      bannerFile = file;
-      showPreview('banner-thumb', 'banner-name', 'banner-size', 'banner-preview', 'banner-zone', file, url => {
-        bannerDataUrl = url;
-        updatePreview();
-      });
-      document.getElementById('banner-badge').textContent = 'カスタム使用中';
-      document.getElementById('banner-badge').className = 'badge custom';
-    });
-
-    document.getElementById('banner-remove').addEventListener('click', () => {
+    // バナー選択
+    function selectDefault() {
+      useDefault = true;
       bannerFile = null;
       bannerDataUrl = null;
-      clearPreview('banner-thumb', 'banner-name', 'banner-size', 'banner-preview', 'banner-zone', 'banner-input');
-      document.getElementById('banner-badge').textContent = '使用中';
-      document.getElementById('banner-badge').className = 'badge';
+      document.getElementById('banner-default-card').classList.add('selected');
+      document.getElementById('banner-custom-card').classList.remove('selected');
       updatePreview();
+    }
+
+    const bannerInput = document.getElementById('banner-input');
+    bannerInput.addEventListener('change', () => {
+      if (!bannerInput.files[0]) return;
+      const file = bannerInput.files[0];
+      bannerFile = file;
+      useDefault = false;
+      const reader = new FileReader();
+      reader.onload = e => {
+        bannerDataUrl = e.target.result;
+        const img = document.getElementById('custom-banner-img');
+        img.src = bannerDataUrl;
+        img.style.display = 'block';
+        document.getElementById('custom-placeholder').style.display = 'none';
+        document.getElementById('custom-label').textContent = file.name.length > 14 ? file.name.slice(0,12)+'…' : file.name;
+        document.getElementById('banner-custom-card').classList.add('selected');
+        document.getElementById('banner-default-card').classList.remove('selected');
+        updatePreview();
+      };
+      reader.readAsDataURL(file);
     });
 
-    // リアルタイムプレビュー（Canvas）
+    // リアルタイムプレビュー
     function updatePreview() {
-      const wrap = document.getElementById('preview-canvas-wrap');
-      if (!productDataUrl) { wrap.style.display = 'none'; return; }
-
-      wrap.style.display = 'block';
+      const empty = document.getElementById('preview-empty');
       const canvas = document.getElementById('preview-canvas');
-      const ctx = canvas.getContext('2d');
+
+      if (!productDataUrl) {
+        empty.style.display = 'flex';
+        canvas.style.display = 'none';
+        return;
+      }
+
+      empty.style.display = 'none';
+      canvas.style.display = 'block';
+
       const ratio = parseInt(slider.value) / 100;
-      const SIZE = 500; // プレビュー用サイズ
+      const SIZE = 600;
       canvas.width = SIZE;
       canvas.height = SIZE;
-
+      const ctx = canvas.getContext('2d');
       const bannerH = Math.round(SIZE * ratio);
       const productH = SIZE - bannerH;
 
       const productImg = new Image();
       productImg.onload = () => {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, SIZE, SIZE);
         ctx.drawImage(productImg, 0, 0, SIZE, productH);
 
-        const bannerSrc = bannerDataUrl || defaultBannerSrc;
+        // バナー高さ表示ライン
+        ctx.strokeStyle = 'rgba(229,62,62,0.5)';
+        ctx.setLineDash([6, 4]);
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(0, productH);
+        ctx.lineTo(SIZE, productH);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        const src = useDefault ? defaultBannerSrc : bannerDataUrl;
         const bannerImg = new Image();
         bannerImg.crossOrigin = 'anonymous';
         bannerImg.onload = () => {
           ctx.drawImage(bannerImg, 0, productH, SIZE, bannerH);
+          // バナー割合ラベル
+          ctx.fillStyle = 'rgba(229,62,62,0.85)';
+          ctx.fillRect(SIZE - 66, productH + 6, 60, 22);
+          ctx.fillStyle = 'white';
+          ctx.font = 'bold 13px sans-serif';
+          ctx.textAlign = 'right';
+          ctx.fillText(slider.value + '%', SIZE - 10, productH + 22);
         };
-        bannerImg.src = bannerSrc;
+        bannerImg.src = src;
       };
       productImg.src = productDataUrl;
     }
@@ -412,6 +545,7 @@
       document.getElementById('submit-btn').disabled = !productFile;
     }
 
+    // ダウンロード
     document.getElementById('submit-btn').addEventListener('click', async () => {
       if (!productFile) return;
       document.getElementById('submit-btn').disabled = true;
@@ -420,19 +554,17 @@
       const formData = new FormData();
       formData.append('image', productFile);
       formData.append('banner_ratio', slider.value);
-      if (bannerFile) formData.append('banner', bannerFile);
+      if (!useDefault && bannerFile) formData.append('banner', bannerFile);
 
       try {
         const res = await fetch('/process', { method: 'POST', body: formData });
-        if (!res.ok) throw new Error('処理失敗');
+        if (!res.ok) throw new Error('エラー');
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = url;
-        a.download = 'ebay_listing.jpg';
-        a.click();
+        a.href = url; a.download = 'ebay_listing.jpg'; a.click();
         URL.revokeObjectURL(url);
-      } catch (e) {
+      } catch {
         alert('エラーが発生しました。もう一度試してください。');
       } finally {
         document.getElementById('submit-btn').disabled = false;
