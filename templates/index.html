@@ -4,284 +4,381 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>鵜澤スペシャル</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #1a73e8;
+      --blue-light: #e8f0fe;
+      --green: #1e8e3e;
+      --green-light: #e6f4ea;
+      --red: #d93025;
+      --surface: #ffffff;
+      --bg: #f8f9fa;
+      --border: #e0e0e0;
+      --text: #202124;
+      --text-2: #5f6368;
+      --text-3: #9aa0a6;
+      --shadow-sm: 0 1px 3px rgba(60,64,67,.12), 0 1px 2px rgba(60,64,67,.08);
+      --shadow-md: 0 2px 6px rgba(60,64,67,.12), 0 1px 4px rgba(60,64,67,.08);
+      --shadow-lg: 0 4px 12px rgba(60,64,67,.15), 0 2px 6px rgba(60,64,67,.1);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f0f2f5;
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
-      padding: 32px 16px;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-    .header h1 { font-size: 26px; font-weight: 800; color: #1a1a2e; margin-bottom: 6px; }
-    .header p { color: #777; font-size: 15px; }
-
-    /* ステップカード */
-    .step-card {
-      background: white;
-      border-radius: 16px;
-      padding: 24px 28px;
-      margin-bottom: 16px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-      transition: box-shadow 0.2s;
-    }
-    .step-card.active { box-shadow: 0 4px 20px rgba(229,62,62,0.12); }
-
-    .step-header {
+    /* ── Header ── */
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 64px;
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 18px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .step-num {
+
+    .topbar-logo {
       width: 32px; height: 32px;
+      background: var(--blue);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    .topbar-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .topbar-chip {
+      margin-left: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--blue-light);
+      color: var(--blue);
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.2px;
+    }
+
+    /* ── Layout ── */
+    .layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 64px);
+    }
+
+    /* ── Left Panel ── */
+    .panel {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+      height: calc(100vh - 64px);
+      position: sticky;
+      top: 64px;
+    }
+
+    /* ── Section ── */
+    .section {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .section.done { border-color: #b7d7be; }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .section.done .section-head { background: var(--green-light); border-color: #b7d7be; }
+
+    .step-badge {
+      width: 24px; height: 24px;
       border-radius: 50%;
-      background: #e53e3e;
+      background: var(--text-3);
       color: white;
-      font-size: 15px;
+      font-size: 12px;
       font-weight: 700;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
+      transition: background 0.2s;
     }
-    .step-num.done { background: #38a169; }
-    .step-title { font-size: 16px; font-weight: 700; color: #1a1a2e; }
-    .step-sub { font-size: 13px; color: #999; margin-left: auto; }
+    .section.done .step-badge { background: var(--green); }
 
-    /* ドロップゾーン */
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .section-done-label {
+      margin-left: auto;
+      font-size: 11px;
+      color: var(--green);
+      font-weight: 600;
+      display: none;
+    }
+    .section.done .section-done-label { display: block; }
+
+    .section-body { padding: 16px; }
+
+    /* ── Drop Zone ── */
     .drop-zone {
-      border: 2px dashed #d1d9e6;
-      border-radius: 12px;
-      padding: 36px 20px;
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius-sm);
+      padding: 28px 16px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.2s;
-      background: #fafbfc;
+      transition: all 0.15s;
+      background: var(--bg);
     }
-    .drop-zone:hover, .drop-zone.drag-over { border-color: #e53e3e; background: #fff5f5; }
-    .drop-zone .icon { font-size: 40px; margin-bottom: 10px; }
-    .drop-zone p { color: #555; font-size: 15px; margin-bottom: 4px; font-weight: 500; }
-    .drop-zone span { color: #aaa; font-size: 13px; }
+    .drop-zone:hover { border-color: var(--blue); background: var(--blue-light); }
+    .drop-zone.drag-over { border-color: var(--blue); background: var(--blue-light); }
+    .drop-zone .dz-icon { font-size: 28px; margin-bottom: 8px; }
+    .drop-zone .dz-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+    .drop-zone .dz-sub { font-size: 12px; color: var(--text-3); }
 
-    /* アップロード済みプレビュー */
-    .uploaded {
+    /* ── File Chip ── */
+    .file-chip {
       display: none;
       align-items: center;
-      gap: 16px;
-      padding: 14px 16px;
-      background: #f0fff4;
-      border: 1.5px solid #9ae6b4;
-      border-radius: 12px;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--green-light);
+      border: 1px solid #b7d7be;
+      border-radius: var(--radius-sm);
     }
-    .uploaded img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; flex-shrink: 0; }
-    .uploaded .info { flex: 1; min-width: 0; }
-    .uploaded .info .fname { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .uploaded .info .fsize { font-size: 12px; color: #888; margin-top: 3px; }
-    .change-btn {
-      font-size: 13px;
-      color: #e53e3e;
-      background: none;
-      border: 1.5px solid #e53e3e;
-      border-radius: 8px;
-      padding: 6px 14px;
-      cursor: pointer;
-      font-weight: 600;
-      white-space: nowrap;
-      flex-shrink: 0;
+    .file-chip img { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+    .file-chip .fc-info { flex: 1; min-width: 0; }
+    .file-chip .fc-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-chip .fc-size { font-size: 11px; color: var(--text-2); margin-top: 1px; }
+    .file-chip .fc-change {
+      font-size: 12px; font-weight: 600; color: var(--blue);
+      background: none; border: none; cursor: pointer; flex-shrink: 0; padding: 4px 8px;
     }
-    .change-btn:hover { background: #fff5f5; }
+    .file-chip .fc-change:hover { text-decoration: underline; }
 
-    /* バナー選択 */
-    .banner-cards {
+    /* ── Banner Cards ── */
+    .banner-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .banner-card {
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
+    .banner-opt {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
       overflow: hidden;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s;
       position: relative;
     }
-    .banner-card:hover { border-color: #e53e3e; }
-    .banner-card.selected { border-color: #e53e3e; box-shadow: 0 0 0 3px rgba(229,62,62,0.15); }
+    .banner-opt:hover { border-color: var(--blue); }
+    .banner-opt.selected { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,115,232,0.15); }
 
-    .banner-card .check {
-      position: absolute;
-      top: 8px; right: 8px;
-      width: 24px; height: 24px;
-      background: #e53e3e;
+    .banner-opt .bo-check {
+      position: absolute; top: 6px; right: 6px;
+      width: 20px; height: 20px;
+      background: var(--blue);
       border-radius: 50%;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 13px;
-      font-weight: bold;
+      display: none; align-items: center; justify-content: center;
+      color: white; font-size: 11px; font-weight: bold;
+      box-shadow: var(--shadow-sm);
     }
-    .banner-card.selected .check { display: flex; }
+    .banner-opt.selected .bo-check { display: flex; }
 
-    .banner-card-label {
-      padding: 10px 12px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #444;
-      background: #fafafa;
-      border-top: 1px solid #eee;
+    .banner-opt img { width: 100%; height: 60px; object-fit: cover; display: block; }
+
+    .banner-opt .custom-ph {
+      height: 60px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: var(--bg);
+      gap: 4px;
     }
+    .banner-opt .custom-ph .ph-icon { font-size: 20px; color: var(--text-3); }
+    .banner-opt .custom-ph span { font-size: 11px; color: var(--text-3); font-weight: 500; }
 
-    .banner-card img { width: 100%; display: block; height: 70px; object-fit: cover; }
+    .banner-opt .bo-label {
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-2);
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .banner-opt.selected .bo-label { color: var(--blue); }
 
-    .banner-card .custom-placeholder {
-      height: 70px;
+    /* ── Slider ── */
+    .slider-row {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      background: #fafbfc;
-      gap: 6px;
+      gap: 12px;
+      margin-bottom: 10px;
     }
-    .banner-card .custom-placeholder .plus { font-size: 28px; color: #ccc; }
-    .banner-card .custom-placeholder span { font-size: 12px; color: #aaa; }
-
-    /* スライダー */
-    .slider-wrap {
-      background: #fafbfc;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 20px 24px;
-    }
-
-    .slider-top {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
-    .slider-top .label { font-size: 14px; color: #555; font-weight: 500; }
-    .slider-val {
-      font-size: 32px;
-      font-weight: 800;
-      color: #e53e3e;
+    .slider-label { font-size: 13px; color: var(--text-2); flex: 1; }
+    .slider-num {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--blue);
+      min-width: 52px;
+      text-align: right;
       line-height: 1;
     }
-    .slider-val span { font-size: 16px; font-weight: 600; color: #e53e3e; }
+    .slider-num small { font-size: 13px; font-weight: 500; }
 
     input[type=range] {
       -webkit-appearance: none;
       width: 100%;
-      height: 8px;
-      border-radius: 4px;
-      background: linear-gradient(to right, #e53e3e 0%, #e53e3e var(--pct), #e2e8f0 var(--pct), #e2e8f0 100%);
+      height: 4px;
+      border-radius: 2px;
+      background: linear-gradient(to right, var(--blue) 0%, var(--blue) var(--pct), var(--border) var(--pct), var(--border) 100%);
       outline: none;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 26px; height: 26px;
+      width: 20px; height: 20px;
       border-radius: 50%;
-      background: white;
-      border: 3px solid #e53e3e;
+      background: var(--surface);
+      border: 2px solid var(--blue);
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      box-shadow: var(--shadow-md);
+    }
+    .slider-ticks { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-3); }
+
+    /* ── Right: Preview ── */
+    .preview-area {
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    .slider-hints { display: flex; justify-content: space-between; font-size: 12px; color: #bbb; }
-
-    /* プレビュー */
-    .preview-card {
-      background: white;
-      border-radius: 16px;
-      padding: 24px 28px;
-      margin-bottom: 16px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    }
-
-    .preview-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: #1a1a2e;
-      margin-bottom: 16px;
+    .preview-header {
       display: flex;
       align-items: center;
-      gap: 8px;
-    }
-    .preview-title .live-badge {
-      font-size: 11px;
-      background: #fed7d7;
-      color: #c53030;
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-weight: 600;
+      justify-content: space-between;
     }
 
-    .preview-empty {
-      height: 200px;
+    .preview-title-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .live-dot {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-3);
+      font-weight: 500;
+    }
+    .live-dot::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #34a853;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .preview-box {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 520px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .preview-empty-state {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      background: #fafbfc;
-      border: 2px dashed #e2e8f0;
-      border-radius: 12px;
-      color: #ccc;
-      font-size: 14px;
-      gap: 10px;
+      gap: 12px;
+      color: var(--text-3);
     }
-    .preview-empty .icon { font-size: 36px; }
-
-    #preview-canvas {
-      width: 100%;
-      border-radius: 10px;
-      display: block;
+    .preview-empty-state .es-icon {
+      width: 64px; height: 64px;
+      background: var(--bg);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
     }
+    .preview-empty-state p { font-size: 14px; font-weight: 500; }
+    .preview-empty-state span { font-size: 13px; color: var(--text-3); }
 
-    /* ダウンロードボタン */
-    .download-card {
-      background: white;
-      border-radius: 16px;
-      padding: 24px 28px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    }
+    #preview-canvas { width: 100%; height: 100%; display: none; object-fit: contain; }
 
-    .btn-download {
+    /* ── Download Button ── */
+    .btn-primary {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 16px;
-      background: #e53e3e;
+      gap: 8px;
+      padding: 14px 28px;
+      background: var(--blue);
       color: white;
-      font-size: 17px;
-      font-weight: 700;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
       border: none;
-      border-radius: 12px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s;
+      letter-spacing: 0.1px;
+      max-width: 520px;
+      width: 100%;
+      margin: 0 auto;
     }
-    .btn-download:hover { background: #c53030; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(229,62,62,0.4); }
-    .btn-download:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
-    .btn-download .icon { font-size: 20px; }
+    .btn-primary:hover:not(:disabled) {
+      background: #1557b0;
+      box-shadow: 0 2px 8px rgba(26,115,232,0.4);
+      transform: translateY(-1px);
+    }
+    .btn-primary:disabled { background: var(--border); color: var(--text-3); cursor: not-allowed; transform: none; box-shadow: none; }
 
-    .loading { display: none; text-align: center; margin-top: 12px; color: #888; font-size: 14px; }
+    .loading { display: none; text-align: center; font-size: 13px; color: var(--text-3); max-width: 520px; width: 100%; margin: 0 auto; }
     .spinner {
       display: inline-block;
-      width: 16px; height: 16px;
-      border: 2px solid #ddd;
-      border-top-color: #e53e3e;
+      width: 14px; height: 14px;
+      border: 2px solid var(--border);
+      border-top-color: var(--blue);
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       vertical-align: middle;
@@ -290,132 +387,151 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     input[type=file] { display: none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 720px) {
+      .layout { grid-template-columns: 1fr; }
+      .panel { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+      .preview-area { padding: 20px 16px; }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>鵜澤スペシャル</h1>
-      <p>商品写真にバナーを追加して1000×1000pxで出力</p>
-    </div>
 
-    <!-- STEP 1: 商品写真 -->
-    <div class="step-card" id="step1-card">
-      <div class="step-header">
-        <div class="step-num" id="step1-num">1</div>
-        <div class="step-title">商品写真をアップロード</div>
-        <div class="step-sub" id="step1-sub">JPG / PNG</div>
-      </div>
-      <div class="drop-zone" id="product-zone">
-        <div class="icon">🖼️</div>
-        <p>ここに写真をドラッグ＆ドロップ</p>
-        <span>または クリックして選択</span>
-        <input type="file" id="product-input" accept="image/*">
-      </div>
-      <div class="uploaded" id="product-uploaded">
-        <img id="product-thumb" src="" alt="">
-        <div class="info">
-          <div class="fname" id="product-name"></div>
-          <div class="fsize" id="product-size"></div>
-        </div>
-        <button class="change-btn" id="product-change">変更</button>
-      </div>
-    </div>
+  <header class="topbar">
+    <div class="topbar-logo">🏷️</div>
+    <span class="topbar-title">鵜澤スペシャル</span>
+    <span class="topbar-chip">eBay Banner Tool</span>
+  </header>
 
-    <!-- STEP 2: バナー選択 -->
-    <div class="step-card" id="step2-card">
-      <div class="step-header">
-        <div class="step-num" id="step2-num">2</div>
-        <div class="step-title">バナーを選ぶ</div>
-      </div>
-      <div class="banner-cards">
-        <!-- デフォルト -->
-        <div class="banner-card selected" id="banner-default-card" onclick="selectDefault()">
-          <div class="check">✓</div>
-          <img src="/static/banner.png" alt="デフォルトバナー">
-          <div class="banner-card-label">デフォルト</div>
+  <div class="layout">
+
+    <!-- ── Left Panel ── -->
+    <aside class="panel">
+
+      <!-- Step 1 -->
+      <div class="section" id="sec1">
+        <div class="section-head">
+          <div class="step-badge" id="badge1">1</div>
+          <div class="section-title">商品写真をアップロード</div>
+          <div class="section-done-label">✓ 完了</div>
         </div>
-        <!-- カスタム -->
-        <div class="banner-card" id="banner-custom-card" onclick="document.getElementById('banner-input').click()">
-          <div class="check">✓</div>
-          <div class="custom-placeholder" id="custom-placeholder">
-            <div class="plus">＋</div>
-            <span>カスタムを追加</span>
+        <div class="section-body">
+          <div class="drop-zone" id="product-zone">
+            <div class="dz-icon">🖼️</div>
+            <div class="dz-title">ドラッグ＆ドロップ</div>
+            <div class="dz-sub">またはクリックして選択 · JPG / PNG</div>
+            <input type="file" id="product-input" accept="image/*">
           </div>
-          <img id="custom-banner-img" src="" alt="" style="display:none; height:70px; object-fit:cover;">
-          <div class="banner-card-label" id="custom-label">カスタム</div>
-          <input type="file" id="banner-input" accept="image/*">
+          <div class="file-chip" id="product-chip">
+            <img id="product-thumb" src="" alt="">
+            <div class="fc-info">
+              <div class="fc-name" id="product-name"></div>
+              <div class="fc-size" id="product-size"></div>
+            </div>
+            <button class="fc-change" id="product-change">変更</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- STEP 3: サイズ調整 -->
-    <div class="step-card" id="step3-card">
-      <div class="step-header">
-        <div class="step-num">3</div>
-        <div class="step-title">バナーの大きさを調整</div>
-      </div>
-      <div class="slider-wrap">
-        <div class="slider-top">
-          <div class="label">バナーの高さ（全体に対する割合）</div>
-          <div class="slider-val"><span id="ratio-display">22</span><span>%</span></div>
+      <!-- Step 2 -->
+      <div class="section" id="sec2">
+        <div class="section-head">
+          <div class="step-badge" id="badge2">2</div>
+          <div class="section-title">バナーを選択</div>
         </div>
-        <input type="range" id="banner-ratio" min="10" max="40" value="22" step="1">
-        <div class="slider-hints">
-          <span>小さめ 10%</span>
-          <span>おすすめ 22%</span>
-          <span>大きめ 40%</span>
+        <div class="section-body">
+          <div class="banner-grid">
+            <div class="banner-opt selected" id="opt-default" onclick="selectBanner('default')">
+              <div class="bo-check">✓</div>
+              <img src="/static/banner.png" alt="デフォルト">
+              <div class="bo-label">デフォルト</div>
+            </div>
+            <div class="banner-opt" id="opt-custom" onclick="document.getElementById('banner-input').click()">
+              <div class="bo-check">✓</div>
+              <div class="custom-ph" id="custom-ph">
+                <div class="ph-icon">＋</div>
+                <span>カスタム追加</span>
+              </div>
+              <img id="custom-banner-img" src="" alt="" style="display:none; height:60px; object-fit:cover; width:100%;">
+              <div class="bo-label" id="custom-label">カスタム</div>
+              <input type="file" id="banner-input" accept="image/*">
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- プレビュー -->
-    <div class="preview-card">
-      <div class="preview-title">
-        プレビュー
-        <span class="live-badge">LIVE</span>
+      <!-- Step 3 -->
+      <div class="section" id="sec3">
+        <div class="section-head">
+          <div class="step-badge">3</div>
+          <div class="section-title">バナーサイズを調整</div>
+        </div>
+        <div class="section-body">
+          <div class="slider-row">
+            <div class="slider-label">バナーの高さ（全体比）</div>
+            <div class="slider-num"><span id="ratio-display">22</span><small>%</small></div>
+          </div>
+          <input type="range" id="banner-ratio" min="10" max="40" value="22" step="1">
+          <div class="slider-ticks">
+            <span>小 10%</span>
+            <span>標準 22%</span>
+            <span>大 40%</span>
+          </div>
+        </div>
       </div>
-      <div class="preview-empty" id="preview-empty">
-        <div class="icon">👆</div>
-        <div>商品写真をアップロードするとここに表示されます</div>
-      </div>
-      <canvas id="preview-canvas" style="display:none;"></canvas>
-    </div>
 
-    <!-- ダウンロード -->
-    <div class="download-card">
-      <button class="btn-download" id="submit-btn" disabled>
-        <span class="icon">⬇️</span> バナーを追加してダウンロード
+    </aside>
+
+    <!-- ── Right Preview ── -->
+    <main class="preview-area">
+      <div class="preview-header">
+        <div class="preview-title-text">プレビュー</div>
+        <div class="live-dot">リアルタイム更新</div>
+      </div>
+
+      <div class="preview-box" id="preview-box">
+        <div class="preview-empty-state" id="preview-empty">
+          <div class="es-icon">🖼️</div>
+          <p>商品写真をアップロードしてください</p>
+          <span>プレビューがここに表示されます</span>
+        </div>
+        <canvas id="preview-canvas"></canvas>
+      </div>
+
+      <button class="btn-primary" id="submit-btn" disabled>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        ダウンロード（1000 × 1000 px）
       </button>
+
       <div class="loading" id="loading">
-        <span class="spinner"></span>処理中...
+        <span class="spinner"></span>画像を生成しています...
       </div>
-    </div>
+    </main>
+
   </div>
 
   <script>
-    let productFile = null;
-    let bannerFile = null;
-    let productDataUrl = null;
-    let bannerDataUrl = null;
+    let productFile = null, bannerFile = null;
+    let productDataUrl = null, bannerDataUrl = null;
     let useDefault = true;
     const defaultBannerSrc = '/static/banner.png';
 
-    // スライダー初期化（保存値復元）
+    // スライダー復元
     const slider = document.getElementById('banner-ratio');
     const ratioDisplay = document.getElementById('ratio-display');
-    const saved = localStorage.getItem('bannerRatio');
-    if (saved) { slider.value = saved; ratioDisplay.textContent = saved; }
-    updateSliderColor();
+    const savedRatio = localStorage.getItem('bannerRatio');
+    if (savedRatio) { slider.value = savedRatio; ratioDisplay.textContent = savedRatio; }
+    syncSlider();
 
     slider.addEventListener('input', () => {
       ratioDisplay.textContent = slider.value;
       localStorage.setItem('bannerRatio', slider.value);
-      updateSliderColor();
+      syncSlider();
       updatePreview();
     });
 
-    function updateSliderColor() {
+    function syncSlider() {
       const pct = ((slider.value - slider.min) / (slider.max - slider.min) * 100).toFixed(1) + '%';
       slider.style.setProperty('--pct', pct);
     }
@@ -428,10 +544,9 @@
     productZone.addEventListener('dragover', e => { e.preventDefault(); productZone.classList.add('drag-over'); });
     productZone.addEventListener('dragleave', () => productZone.classList.remove('drag-over'));
     productZone.addEventListener('drop', e => {
-      e.preventDefault();
-      productZone.classList.remove('drag-over');
+      e.preventDefault(); productZone.classList.remove('drag-over');
       const f = e.dataTransfer.files[0];
-      if (f && f.type.startsWith('image/')) setProduct(f);
+      if (f?.type.startsWith('image/')) setProduct(f);
     });
     productInput.addEventListener('change', () => { if (productInput.files[0]) setProduct(productInput.files[0]); });
     document.getElementById('product-change').addEventListener('click', () => productInput.click());
@@ -445,9 +560,9 @@
         document.getElementById('product-name').textContent = file.name;
         document.getElementById('product-size').textContent = (file.size / 1024).toFixed(0) + ' KB';
         productZone.style.display = 'none';
-        document.getElementById('product-uploaded').style.display = 'flex';
-        document.getElementById('step1-num').classList.add('done');
-        document.getElementById('step1-num').textContent = '✓';
+        document.getElementById('product-chip').style.display = 'flex';
+        document.getElementById('sec1').classList.add('done');
+        document.getElementById('badge1').textContent = '✓';
         updateSubmit();
         updatePreview();
       };
@@ -455,90 +570,90 @@
     }
 
     // バナー選択
-    function selectDefault() {
-      useDefault = true;
-      bannerFile = null;
-      bannerDataUrl = null;
-      document.getElementById('banner-default-card').classList.add('selected');
-      document.getElementById('banner-custom-card').classList.remove('selected');
+    function selectBanner(type) {
+      if (type === 'default') {
+        useDefault = true; bannerFile = null; bannerDataUrl = null;
+        document.getElementById('opt-default').classList.add('selected');
+        document.getElementById('opt-custom').classList.remove('selected');
+      }
       updatePreview();
     }
 
-    const bannerInput = document.getElementById('banner-input');
-    bannerInput.addEventListener('change', () => {
-      if (!bannerInput.files[0]) return;
-      const file = bannerInput.files[0];
-      bannerFile = file;
+    document.getElementById('banner-input').addEventListener('change', function() {
+      if (!this.files[0]) return;
+      bannerFile = this.files[0];
       useDefault = false;
       const reader = new FileReader();
       reader.onload = e => {
         bannerDataUrl = e.target.result;
         const img = document.getElementById('custom-banner-img');
-        img.src = bannerDataUrl;
-        img.style.display = 'block';
-        document.getElementById('custom-placeholder').style.display = 'none';
-        document.getElementById('custom-label').textContent = file.name.length > 14 ? file.name.slice(0,12)+'…' : file.name;
-        document.getElementById('banner-custom-card').classList.add('selected');
-        document.getElementById('banner-default-card').classList.remove('selected');
+        img.src = bannerDataUrl; img.style.display = 'block';
+        document.getElementById('custom-ph').style.display = 'none';
+        const n = bannerFile.name;
+        document.getElementById('custom-label').textContent = n.length > 12 ? n.slice(0,10)+'…' : n;
+        document.getElementById('opt-custom').classList.add('selected');
+        document.getElementById('opt-default').classList.remove('selected');
         updatePreview();
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(bannerFile);
     });
 
-    // リアルタイムプレビュー
+    // プレビュー
     function updatePreview() {
       const empty = document.getElementById('preview-empty');
       const canvas = document.getElementById('preview-canvas');
-
-      if (!productDataUrl) {
-        empty.style.display = 'flex';
-        canvas.style.display = 'none';
-        return;
-      }
+      if (!productDataUrl) { empty.style.display = 'flex'; canvas.style.display = 'none'; return; }
 
       empty.style.display = 'none';
       canvas.style.display = 'block';
 
-      const ratio = parseInt(slider.value) / 100;
       const SIZE = 600;
-      canvas.width = SIZE;
-      canvas.height = SIZE;
+      canvas.width = SIZE; canvas.height = SIZE;
       const ctx = canvas.getContext('2d');
+      const ratio = parseInt(slider.value) / 100;
       const bannerH = Math.round(SIZE * ratio);
       const productH = SIZE - bannerH;
 
-      const productImg = new Image();
-      productImg.onload = () => {
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, SIZE, SIZE);
-        ctx.drawImage(productImg, 0, 0, SIZE, productH);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, SIZE, SIZE);
 
-        // バナー高さ表示ライン
-        ctx.strokeStyle = 'rgba(229,62,62,0.5)';
-        ctx.setLineDash([6, 4]);
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(0, productH);
-        ctx.lineTo(SIZE, productH);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
+      const pImg = new Image();
+      pImg.onload = () => {
+        ctx.drawImage(pImg, 0, 0, SIZE, productH);
         const src = useDefault ? defaultBannerSrc : bannerDataUrl;
-        const bannerImg = new Image();
-        bannerImg.crossOrigin = 'anonymous';
-        bannerImg.onload = () => {
-          ctx.drawImage(bannerImg, 0, productH, SIZE, bannerH);
-          // バナー割合ラベル
-          ctx.fillStyle = 'rgba(229,62,62,0.85)';
-          ctx.fillRect(SIZE - 66, productH + 6, 60, 22);
-          ctx.fillStyle = 'white';
-          ctx.font = 'bold 13px sans-serif';
-          ctx.textAlign = 'right';
-          ctx.fillText(slider.value + '%', SIZE - 10, productH + 22);
+        const bImg = new Image();
+        bImg.crossOrigin = 'anonymous';
+        bImg.onload = () => {
+          ctx.drawImage(bImg, 0, productH, SIZE, bannerH);
+          // 境界線
+          ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(0, productH); ctx.lineTo(SIZE, productH); ctx.stroke();
+          // バッジ
+          const label = slider.value + '%';
+          ctx.font = '600 12px Inter, sans-serif';
+          const tw = ctx.measureText(label).width;
+          const bw = tw + 20, bh = 24, bx = SIZE - bw - 10, by = productH - bh - 10;
+          ctx.fillStyle = 'rgba(26,115,232,0.9)';
+          roundRect(ctx, bx, by, bw, bh, 6);
+          ctx.fill();
+          ctx.fillStyle = '#fff';
+          ctx.textAlign = 'center';
+          ctx.fillText(label, bx + bw/2, by + 16);
         };
-        bannerImg.src = src;
+        bImg.src = src;
       };
-      productImg.src = productDataUrl;
+      pImg.src = productDataUrl;
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
     }
 
     function updateSubmit() {
@@ -551,21 +666,21 @@
       document.getElementById('submit-btn').disabled = true;
       document.getElementById('loading').style.display = 'block';
 
-      const formData = new FormData();
-      formData.append('image', productFile);
-      formData.append('banner_ratio', slider.value);
-      if (!useDefault && bannerFile) formData.append('banner', bannerFile);
+      const fd = new FormData();
+      fd.append('image', productFile);
+      fd.append('banner_ratio', slider.value);
+      if (!useDefault && bannerFile) fd.append('banner', bannerFile);
 
       try {
-        const res = await fetch('/process', { method: 'POST', body: formData });
-        if (!res.ok) throw new Error('エラー');
+        const res = await fetch('/process', { method: 'POST', body: fd });
+        if (!res.ok) throw new Error();
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url; a.download = 'ebay_listing.jpg'; a.click();
         URL.revokeObjectURL(url);
       } catch {
-        alert('エラーが発生しました。もう一度試してください。');
+        alert('エラーが発生しました。もう一度お試しください。');
       } finally {
         document.getElementById('submit-btn').disabled = false;
         document.getElementById('loading').style.display = 'none';
