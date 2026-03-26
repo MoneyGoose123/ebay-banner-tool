@@ -25,7 +25,12 @@ def process():
         return "ファイルを選択してください", 400
 
     product = Image.open(file.stream).convert("RGB")
-    banner = Image.open(BANNER_PATH).convert("RGB")
+
+    # カスタムバナーがあればそれを使用、なければデフォルト
+    if "banner" in request.files and request.files["banner"].filename != "":
+        banner = Image.open(request.files["banner"].stream).convert("RGB")
+    else:
+        banner = Image.open(BANNER_PATH).convert("RGB")
 
     banner_h = int(SIZE * BANNER_RATIO)
     product_h = SIZE - banner_h
