@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 
 BANNER_PATH = os.path.join(os.path.dirname(__file__), "static", "banner.png")
-SIZE = 1000
+SIZE = 1600  # eBay推奨サイズ（最低1000px、推奨1600px）
 BANNER_RATIO = 0.22
 
 
